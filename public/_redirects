@@ -1,0 +1,5 @@
+# Redirects generated from migration/url-mapping.csv
+# Cloudflare Pages format: <from> <to> <status>
+/%f0%9f%9a%80-professional-insight-and-cautionary-advice-for-fellow-programmers-and-freelancers/ /blog/%f0%9f%9a%80-professional-insight-and-cautionary-advice-for-fellow-programmers-and-freelancers/ 301
+/artificial-intelligence-in-business-decision-making-the-future-of-corporate-strategy/ /blog/artificial-intelligence-in-business-decision-making-the-future-of-corporate-strategy/ 301
+/the-reality-of-layoffs-in-corporate-culture-a-personal-reflection/ /blog/the-reality-of-layoffs-in-corporate-culture-a-personal-reflection/ 301

@@ -1,0 +1,16 @@
+# LinkedIn poster Worker — receives GitHub push webhooks, cross-posts to LinkedIn.
+#
+# Local dev:
+#   WEBHOOK_SECRET=test-secret npx wrangler dev          (from this directory)
+#   curl -X POST http://localhost:8787/webhook \
+#     -H "x-hub-signature-256: $(WEBHOOK_SECRET=test-secret node --import tsx ../../scripts/sign-webhook.ts test-payload.json)" \
+#     -d @test-payload.json
+#
+# Secrets (wrangler secret put ...):
+#   WEBHOOK_SECRET          GitHub webhook shared secret
+#   GITHUB_WEBHOOK_SECRET   fallback name for the same secret
+#   LINKEDIN_ACCESS_TOKEN   LinkedIn OAuth user token
+name = "linkedin-poster"
+main = "src/index.ts"
+compatibility_date = "2026-08-22"
+compatibility_flags = ["nodejs_compat"]

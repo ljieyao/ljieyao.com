@@ -1,0 +1,108 @@
+{
+  "ref": "refs/heads/main",
+  "before": "5c1f9a2bd8e0476fa3b9c2d1e0f8a7b6c5d4e3f2",
+  "after": "a3d7c9e1f2b4a6d8c0e2f4a6b8d0c2e4f6a8b0d2",
+  "repository": {
+    "id": 803417625,
+    "node_id": "R_kgDOLDxJqg",
+    "name": "ljieyao.com",
+    "full_name": "ljieyao/ljieyao.com",
+    "private": false,
+    "html_url": "https://github.com/ljieyao/ljieyao.com",
+    "description": "Personal site — Next.js static export on Cloudflare Pages",
+    "fork": false,
+    "url": "https://api.github.com/repos/ljieyao/ljieyao.com",
+    "default_branch": "main",
+    "created_at": "2026-08-10T09:15:33Z",
+    "updated_at": "2026-08-22T07:40:12Z",
+    "pushed_at": "2026-08-22T08:12:45Z",
+    "size": 18432
+  },
+  "pusher": {
+    "name": "ljieyao",
+    "email": "ljieyao0210@gmail.com"
+  },
+  "sender": {
+    "login": "ljieyao",
+    "id": 3910458,
+    "node_id": "MDQ6VXNlcjM5MTA0NTg=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/3910458?v=4",
+    "html_url": "https://github.com/ljieyao",
+    "type": "User"
+  },
+  "commits": [
+    {
+      "id": "a3d7c9e1f2b4a6d8c0e2f4a6b8d0c2e4f6a8b0d2",
+      "tree_id": "9f8e7d6c5b4a392817f6e5d4c3b2a1908f7e6d5c",
+      "distinct": true,
+      "message": "post: shipping a cloudflare worker for linkedin cross-posting",
+      "timestamp": "2026-08-22T08:12:45Z",
+      "url": "https://github.com/ljieyao/ljieyao.com/commit/a3d7c9e1f2b4a6d8c0e2f4a6b8d0c2e4f6a8b0d2",
+      "author": {
+        "name": "JY Liu",
+        "email": "ljieyao0210@gmail.com",
+        "username": "ljieyao"
+      },
+      "committer": {
+        "name": "JY Liu",
+        "email": "ljieyao0210@gmail.com",
+        "username": "ljieyao"
+      },
+      "added": [
+        "content/posts/shipping-a-cloudflare-worker-for-linkedin-cross-posting.mdx"
+      ],
+      "removed": [],
+      "modified": [
+        "content/posts/the-reality-of-layoffs-in-corporate-culture-a-personal-reflection.mdx"
+      ]
+    },
+    {
+      "id": "7b1c3d5e9f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0",
+      "tree_id": "1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d",
+      "distinct": true,
+      "message": "docs: tweak readme",
+      "timestamp": "2026-08-22T08:10:02Z",
+      "url": "https://github.com/ljieyao/ljieyao.com/commit/7b1c3d5e9f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0",
+      "author": {
+        "name": "JY Liu",
+        "email": "ljieyao0210@gmail.com",
+        "username": "ljieyao"
+      },
+      "committer": {
+        "name": "JY Liu",
+        "email": "ljieyao0210@gmail.com",
+        "username": "ljieyao"
+      },
+      "added": [],
+      "removed": [],
+      "modified": [
+        "README.md"
+      ]
+    }
+  ],
+  "head_commit": {
+    "id": "a3d7c9e1f2b4a6d8c0e2f4a6b8d0c2e4f6a8b0d2",
+    "tree_id": "9f8e7d6c5b4a392817f6e5d4c3b2a1908f7e6d5c",
+    "distinct": true,
+    "message": "post: shipping a cloudflare worker for linkedin cross-posting",
+    "timestamp": "2026-08-22T08:12:45Z",
+    "url": "https://github.com/ljieyao/ljieyao.com/commit/a3d7c9e1f2b4a6d8c0e2f4a6b8d0c2e4f6a8b0d2",
+    "author": {
+      "name": "JY Liu",
+      "email": "ljieyao0210@gmail.com",
+      "username": "ljieyao"
+    },
+    "committer": {
+      "name": "JY Liu",
+      "email": "ljieyao0210@gmail.com",
+      "username": "ljieyao"
+    },
+    "added": [
+      "content/posts/shipping-a-cloudflare-worker-for-linkedin-cross-posting.mdx"
+    ],
+    "removed": [],
+    "modified": [
+      "content/posts/the-reality-of-layoffs-in-corporate-culture-a-personal-reflection.mdx"
+    ]
+  }
+}

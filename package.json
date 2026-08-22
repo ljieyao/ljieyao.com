@@ -6,12 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "new-post": "tsx scripts/new-post.ts",
+    "ai-draft": "tsx scripts/ai-draft.ts",
+    "publish-post": "tsx scripts/publish-post.ts",
+    "sign-webhook": "tsx scripts/sign-webhook.ts"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.10",
     "next": "16.3.1",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
@@ -21,6 +28,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "16.3.1",
     "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.12",
     "typescript": "^5.9.3",
     "wrangler": "^4.125.0"
   },

@@ -1,0 +1,16 @@
+/
+/%f0%9f%9a%80-professional-insight-and-cautionary-advice-for-fellow-programmers-and-freelancers/
+/artificial-intelligence-in-business-decision-making-the-future-of-corporate-strategy/
+/blog/
+/contact/
+/portfolio/buddy-system/
+/portfolio/cxm-direct-mall/
+/portfolio/cxm-group-china-mall/
+/portfolio/innolab-global/
+/portfolio/my-pet-nexus/
+/portfolio/online-form-for-dentrix-and-hop/
+/portfolio/reach-out-malaysia/
+/portfolio/superpowered/
+/privacy-policy/
+/the-reality-of-layoffs-in-corporate-culture-a-personal-reflection/
+/works/
