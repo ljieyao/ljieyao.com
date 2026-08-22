@@ -66,9 +66,15 @@ body {
   text-underline-offset: 3px;
 }
 .md-body img {
+  border: 1px solid #e4e4e7;
   border-radius: 0.75rem;
   max-width: 100%;
   height: auto;
+}
+@media (prefers-color-scheme: dark) {
+  .md-body img {
+    border-color: #27272a;
+  }
 }
 .md-body blockquote {
   border-left: 3px solid #a1a1aa;
@@ -109,5 +115,16 @@ body {
 @media (prefers-color-scheme: dark) {
   .md-body hr {
     border-color: #27272a;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

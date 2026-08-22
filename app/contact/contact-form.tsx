@@ -111,7 +111,7 @@ export function ContactForm() {
       ) : (
         <button
           type="submit"
-          className="h-11 justify-self-start rounded-full bg-zinc-950 px-8 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-300"
+          className="h-11 cursor-pointer justify-self-start rounded-full bg-zinc-950 px-8 text-sm font-medium text-white transition-[background-color,transform] duration-200 hover:bg-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-safe:active:scale-[0.98] dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-300 dark:focus-visible:ring-offset-zinc-950"
         >
           Send message
         </button>
