@@ -1,0 +1,6 @@
+# Cloudflare Pages configuration for ljieyao.com
+# Deploys the Next.js static export (./out) to ljieyao-com.pages.dev.
+# Deploy command (CI): wrangler pages deploy ./out --project-name=ljieyao-com
+name = "ljieyao-com"
+pages_build_output_dir = "./out"
+compatibility_date = "2026-08-22"

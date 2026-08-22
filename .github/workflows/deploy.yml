@@ -1,0 +1,57 @@
+name: Deploy to Cloudflare Pages
+
+# Deploys the Next.js static export (./out) to the ljieyao-com Cloudflare Pages
+# project (https://ljieyao-com.pages.dev).
+#
+# Required GitHub secrets (Settings > Secrets and variables > Actions):
+#   CLOUDFLARE_API_TOKEN  - API token with "Cloudflare Pages: Edit" permission
+#                           on the account. Create at
+#                           https://dash.cloudflare.com/profile/api-tokens
+#   CLOUDFLARE_ACCOUNT_ID - Account ID from the Cloudflare dashboard
+#                           (Workers & Pages > Overview, right sidebar).
+#
+# Behavior:
+#   - push to main      -> production deployment (ljieyao-com.pages.dev)
+#   - pull_request      -> preview deployment (unique <hash>.ljieyao-com.pages.dev URL)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build static export
+        run: pnpm build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy ./out --project-name=ljieyao-com
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
