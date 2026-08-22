@@ -1,0 +1,172 @@
+{
+  "generatedAt": "2026-08-22T10:11:27.373Z",
+  "description": "Image asset migration: remote/hotlinked WP uploads -> local public/images, plus portfolio cover screenshots",
+  "posts": [
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/DALL·E-2024-09-22-22.31.28-A-balance-scale-with-one-side-representing-Artificial-Intelligence-AI-with-futuristic-digital-elements-and-the-other-side-representing-human-decisi-300x300.webp",
+      "localPath": "/images/posts/artificial-intelligence-in-business-decision-making-the-future-of-corporate-strategy-1.webp",
+      "bytes": 23520,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/02/1707829090214-300x146.png",
+      "localPath": "/images/posts/professional-insight-and-cautionary-advice-for-fellow-programmers-and-freelancers-1.png",
+      "bytes": 61524,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/DALL·E-2024-09-22-20.51.56-A-deserted-virtual-meeting-room-with-empty-chairs-around-a-conference-table-and-a-laptop-screen-showing-a-disconnected-meeting-call.-The-scene-is-somb-300x300.webp",
+      "localPath": "/images/posts/the-reality-of-layoffs-in-corporate-culture-a-personal-reflection-1.webp",
+      "bytes": 18226,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/DALL·E-2024-09-22-20.52.04-A-laptop-on-a-desk-with-various-social-media-icons-scattered-around-the-screen-representing-frantic-attempts-to-reach-out-through-social-networks-and-300x300.webp",
+      "localPath": "/images/posts/the-reality-of-layoffs-in-corporate-culture-a-personal-reflection-2.webp",
+      "bytes": 28518,
+      "status": "ok"
+    }
+  ],
+  "experience": [
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/shiftmarkets_logo.jpeg",
+      "localPath": "/images/experience/shift-market.jpeg",
+      "bytes": 3485,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/innolab_global_logo.jpeg",
+      "localPath": "/images/experience/innolab.jpeg",
+      "bytes": 953,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/1631317620288.jpeg",
+      "localPath": "/images/experience/the-consociation.jpeg",
+      "bytes": 5320,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/1631431745458.jpeg",
+      "localPath": "/images/experience/internetbrands.jpeg",
+      "bytes": 5768,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/yoursoftwaresupplier_logo.jpeg",
+      "localPath": "/images/experience/your-software-supplier.jpeg",
+      "bytes": 2422,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/buddyholdings_logo.jpeg",
+      "localPath": "/images/experience/buddy-holdings.jpeg",
+      "bytes": 3109,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/cakexp_logo.jpeg",
+      "localPath": "/images/experience/cake-experiential-communications-asia.jpeg",
+      "bytes": 2319,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/glints_logo.jpeg",
+      "localPath": "/images/experience/glints.jpeg",
+      "bytes": 1567,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/supahands_logo.jpeg",
+      "localPath": "/images/experience/supahands.jpeg",
+      "bytes": 1815,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/fujixerox-logo.png",
+      "localPath": "/images/experience/fuji-xerox.png",
+      "bytes": 3770,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/xamblegrouplimited_logo.jpeg",
+      "localPath": "/images/experience/netccentric.jpeg",
+      "bytes": 2037,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/1631307430062.jpeg",
+      "localPath": "/images/experience/nexstream.jpeg",
+      "bytes": 1189,
+      "status": "ok"
+    },
+    {
+      "source": "https://ljieyao.com/wp-content/uploads/2024/09/university_of_malaya_logo.jpeg",
+      "localPath": "/images/experience/university-of-malaya.jpeg",
+      "bytes": 3442,
+      "status": "ok"
+    }
+  ],
+  "portfolio": {
+    "note": "content/portfolio/*.mdx frontmatter carries no live-URL field; candidate URLs were identified from the live WP portfolio pages, web lookup, and DNS/HTTP probes on 2026-08-22.",
+    "entries": [
+      {
+        "portfolio": "innolab-global",
+        "targetUrl": "https://www.innolab.global/",
+        "localPath": "/images/portfolio/innolab-global.jpg",
+        "bytes": 80988,
+        "status": "ok",
+        "method": "headless Chrome screenshot 1600x1000, JPEG q82 via sharp"
+      },
+      {
+        "portfolio": "buddy-system",
+        "targetUrl": null,
+        "localPath": null,
+        "status": "skipped",
+        "reason": "no public URL on record — client MLM platform is private/internal; no candidate domain found"
+      },
+      {
+        "portfolio": "cxm-direct-mall",
+        "targetUrl": null,
+        "localPath": null,
+        "status": "skipped",
+        "reason": "no distinct public URL — https://www.cxmdirect.com/ is the CXM corporate broker site, not the mall project; mall.* subdomains dead"
+      },
+      {
+        "portfolio": "cxm-group-china-mall",
+        "targetUrl": null,
+        "localPath": null,
+        "status": "skipped",
+        "reason": "no public URL found — e-commerce project not reachable at any probed CXM domain"
+      },
+      {
+        "portfolio": "my-pet-nexus",
+        "targetUrl": null,
+        "localPath": null,
+        "status": "skipped",
+        "reason": "no public URL — petnexus.com is a parked for-sale domain; actual product is the Demandforce/InternetBrands vet portal behind auth"
+      },
+      {
+        "portfolio": "online-form-for-dentrix-and-hop",
+        "targetUrl": null,
+        "localPath": null,
+        "status": "skipped",
+        "reason": "no public URL — client-internal patient-forms platform (Laravel backend); hub.dentrix.com is Henry Schein product, attribution unconfirmed"
+      },
+      {
+        "portfolio": "reach-out-malaysia",
+        "targetUrl": null,
+        "localPath": null,
+        "status": "skipped",
+        "reason": "site dead — reachoutmy.com no longer resolves (DNS NXDOMAIN)"
+      },
+      {
+        "portfolio": "superpowered",
+        "targetUrl": null,
+        "localPath": null,
+        "status": "skipped",
+        "reason": "unreachable — https://superpowered.glints.com/ returns Cloudflare WAF challenge to headless Chrome; internal Glints recruitment platform with no public marketing site"
+      }
+    ]
+  }
+}
