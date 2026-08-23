@@ -46,6 +46,12 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build static export
+        # Public-facing NEXT_PUBLIC_* env vars are inlined into the static
+        # export at build time. Define them here so each build produces a
+        # self-contained ./out with the correct contact-form sitekey + worker URL.
+        env:
+          NEXT_PUBLIC_TURNSTILE_SITEKEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITEKEY }}
+          NEXT_PUBLIC_CONTACT_WORKER_URL: ${{ vars.NEXT_PUBLIC_CONTACT_WORKER_URL }}
         run: pnpm build
 
       - name: Deploy to Cloudflare Pages
