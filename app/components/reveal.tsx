@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
+import { useJsEnabled } from "./use-js-enabled";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -14,12 +15,14 @@ type RevealProps = {
 
 /**
  * Fade + rise scroll reveal. Renders a plain static <div> (identical classes,
- * fully visible content) when the user prefers reduced motion.
+ * fully visible content) when the user prefers reduced motion or when JS is
+ * unavailable — the hidden initial state is only ever applied client-side.
  */
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
   const reduce = useReducedMotion();
+  const js = useJsEnabled();
 
-  if (reduce) {
+  if (reduce || !js) {
     return <div className={className}>{children}</div>;
   }
 

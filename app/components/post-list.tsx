@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import type { Post } from "@/lib/content";
 import { categoryLabel, formatDate } from "@/lib/format";
+import { useJsEnabled } from "./use-js-enabled";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -21,6 +22,8 @@ export function PostList({
   headingLevel: Heading = "h2",
 }: PostListProps) {
   const reduce = useReducedMotion();
+  const js = useJsEnabled();
+  const static_ = reduce || !js;
   const itemPadding = variant === "index" ? "py-8" : "py-6";
   const titleClassName =
     variant === "index"
@@ -57,7 +60,7 @@ export function PostList({
           </Link>
         );
 
-        if (reduce) {
+        if (static_) {
           return <li key={post.slug}>{body}</li>;
         }
 

@@ -3,11 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Accent lock: emerald-600 on light, emerald-400 on dark (WCAG AA ≥3:1
+     against the zinc page backgrounds; see scripts/check-accent-contrast.py).
+     Reserved for: nav active indicator, timeline nodes, inline link hover,
+     hero eyebrow dot, CTA hover ring. Never large surfaces or body text. */
+  --accent: #059669;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,6 +22,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --accent: #34d399;
   }
 }
 
@@ -64,6 +71,9 @@ body {
   color: var(--foreground);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+.md-body a:hover {
+  color: var(--accent);
 }
 .md-body img {
   border: 1px solid #e4e4e7;
@@ -146,5 +156,24 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Portfolio monogram fallback: deterministic duotone zinc gradient field.
+   Angle/stop vars are set inline per slug; dark stops swap via media query. */
+.monogram-field {
+  background-image: linear-gradient(
+    var(--grad-angle, 135deg),
+    var(--grad-from, #f4f4f5),
+    var(--grad-to, #e4e4e7)
+  );
+}
+@media (prefers-color-scheme: dark) {
+  .monogram-field {
+    background-image: linear-gradient(
+      var(--grad-angle, 135deg),
+      var(--grad-from-dark, #27272a),
+      var(--grad-to-dark, #18181b)
+    );
   }
 }

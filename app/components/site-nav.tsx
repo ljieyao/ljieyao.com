@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/works", label: "Works" },
   { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
 ] as const;
 
 const focusRing =
@@ -34,7 +33,7 @@ export function SiteNav() {
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`relative cursor-pointer rounded-sm text-sm transition-colors duration-200 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:bg-current after:transition-transform after:duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-950 ${
+                className={`relative cursor-pointer rounded-sm text-sm transition-colors duration-200 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:bg-accent after:transition-transform after:duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-950 ${
                   active
                     ? "font-medium text-zinc-950 after:scale-x-100 dark:text-zinc-50"
                     : "text-zinc-500 after:scale-x-0 hover:after:scale-x-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"
@@ -44,14 +43,12 @@ export function SiteNav() {
               </Link>
             );
           })}
-          <a
-            href="https://api.whatsapp.com/send?phone=601164110281"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-2 hidden h-9 cursor-pointer items-center rounded-full bg-zinc-950 px-4 text-sm font-medium text-white transition-[background-color,transform] duration-200 hover:bg-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-safe:active:scale-[0.98] dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-300 dark:focus-visible:ring-offset-zinc-950 sm:inline-flex"
+          <Link
+            href="/contact"
+            className="ml-2 inline-flex h-9 cursor-pointer items-center rounded-full bg-zinc-950 px-4 text-sm font-medium text-white transition-[background-color,transform] duration-200 hover:bg-zinc-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-safe:active:scale-[0.98] dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-300 dark:focus-visible:ring-offset-zinc-950"
           >
-            Let&apos;s Talk
-          </a>
+            Contact
+          </Link>
         </div>
       </nav>
     </header>
