@@ -1,0 +1,25 @@
+# Contact form Worker — receives POST /api/contact from ljieyao.com,
+# verifies Turnstile, and forwards the message via the Resend API.
+#
+# Local dev:
+#   npx wrangler dev          (from this directory)
+#   curl -X POST http://localhost:8787/api/contact \
+#     -H "Content-Type: application/json" \
+#     -d '{"name":"Test","email":"test@example.com","subject":"Hi","comment":"Hello there, testing."}'
+#
+# Secrets (wrangler secret put ...):
+#   RESEND_API_KEY        Resend API key (https://resend.com/api-keys)
+#   TURNSTILE_SECRET      Cloudflare Turnstile secret key (optional — skips
+#                         verification when unset, e.g. local dev)
+#
+# Plain vars (optional, add under [vars] or keep the code defaults):
+#   TURNSTILE_HOSTNAMES   comma-separated hostnames accepted from siteverify
+#                         (e.g. "ljieyao.com,ljieyao-com.pages.dev")
+#   CONTACT_TO_EMAIL      recipient (default ljieyao0210@gmail.com)
+#   CONTACT_FROM_EMAIL    sender (default onboarding@resend.dev — works without
+#                         domain verification; switch to noreply@ljieyao.com once
+#                         the domain is verified in Resend)
+name = "contact-form"
+main = "src/index.ts"
+compatibility_date = "2026-08-22"
+compatibility_flags = ["nodejs_compat"]
