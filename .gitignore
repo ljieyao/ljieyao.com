@@ -45,3 +45,6 @@ next-env.d.ts
 
 # wrangler local state
 workers/*/.wrangler/
+
+# opencode session runtime (ephemeral)
+.omo/run-continuation/
