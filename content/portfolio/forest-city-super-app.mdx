@@ -1,0 +1,52 @@
+---
+title: "Forest City Super App"
+slug: "forest-city-super-app"
+summary: "Production-ready super app (Turborepo + Next.js + Prisma + PostgreSQL + Auth.js) for Forest City — community, events & ticketing, payments, partner portal & admin console."
+stack:
+  - "Next.js"
+  - "NestJS"
+  - "Prisma"
+  - "PostgreSQL"
+  - "Turborepo"
+  - "Auth.js"
+  - "Expo"
+role: "Solutions Architect & Technical Lead"
+publishedAt: "2026-02-20T00:00:00Z"
+draft: false
+linkedin: false
+---
+## Project Overview:
+
+Forest City Super App is a production-ready MVP (90% complete, ~15k LOC) for Country Garden's Forest City — a resident & partner platform covering Community (posts/facilities/tickets), Events & Ticketing (promos/checkout/scanner), Payments, Partner Portal and Admin Console, plus a Mini-App Runtime.
+
+## Technologies Used:
+
+* **Frontend:** Next.js (web-portal :3001, admin-console :3002), Expo (mobile + scanner), Tailwind 4, Sora font
+* **Backend:** 7 NestJS services — api-gateway :3000 (Auth/BFF/Swagger), community-svc :3011, events-svc :3012, payments-svc :3013, notifications-svc :3014, miniapps-registry :7400, signing-svc :7401
+* **Platform:** Turborepo 2.8 + pnpm 9 + TypeScript 5.9, Prisma 7 + PostgreSQL, Auth.js, Docker Compose, OTEL
+* **Quality:** 66+ tests, p95 <400ms, JWT (aud/iss/exp/nbf), rate limiting, PII redaction, audit logs
+
+## Role and Responsibilities:
+
+Via InnoLab Global I led architecture, delivery and mentoring across mobile/web/backend/cloud:
+
+* **Architecture:** Designed gateway-aggregated BFF + service-per-domain topology — 20 parallel Turbo tasks under `pnpm -w dev`, service health at `GET /` and `/v1/health`.
+* **Delivery:** Shipped Epic A–E to 87–100% (Community, Events, Mini-App Runtime with permissions/security/rollout, Partner Portal onboarding/analytics/PDPA, non-functional security/observability/performance) — milestone-driven `bd` gates (lint/test/build per package).
+* **Mini-App Runtime:** Implemented permission sandbox, code signing (signing-svc) and staged rollout for third-party mini-apps hosted via miniapps-registry.
+* **Ops:** Docker Compose dev/prod, DigitalOcean deployment runbook, incident/rollback playbooks, synthetic probes (`tests/synthetic/login-probe.ts`) and Artillery load tests.
+
+## Achievements:
+
+* Unified 7 backend + 4 frontend apps into one `pnpm -w dev` — 5-minute quick-start for residents/partners.
+* Delivered 28+ tests each for Community and Events — posts, facilities, tickets, promos, checkout and QR check-in scanner.
+* Hardened auth, rate limits (5–100 req/min), bot detection and audit logging — 0 critical security issues at MVP review.
+
+## Challenges Overcome:
+
+* Coordinating 11 deployables locally without port conflicts — Turbo concurrency + env-isolated Compose.
+* Mini-app isolation — permission model + signing verification without breaking HMR for web-portal/admin-console.
+* Next.js font fetch in air-gapped build — documented `Sora` offline fallback for `next build`.
+
+## Key Takeaways:
+
+A super app is an ops problem as much as a product problem. Turborepo + strict service boundaries let a small team ship 7 services and 4 clients while keeping onboarding under 5 minutes and p95 under 400ms.

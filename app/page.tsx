@@ -12,9 +12,9 @@ import { PostList } from "./components/post-list";
 import { Reveal } from "./components/reveal";
 
 export const metadata: Metadata = {
-  title: "JY Liu — Full Stack Engineer",
+  title: "JY Liu — Solutions Architect | Technical Lead | Senior Full-Stack Engineer",
   description:
-    "JY Liu is a full stack web & mobile app engineer based in Malaysia, building products across web, mobile, and cloud. Portfolio, case studies, and writing at ljieyao.com.",
+    "Solutions Architect & Technical Lead (12+ years) — enterprise, fintech & integration-heavy platforms. VFS Global consular systems, CXM Direct payments (235k+ users, 12 PSPs), AI-enabled product engineering. MBA (Business Analytics), University of Malaya.",
 };
 
 function SectionHeading({ title, href, linkLabel }: { title: string; href?: string; linkLabel?: string }) {

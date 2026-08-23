@@ -39,6 +39,19 @@ export function ExperienceList({ jobs }: { jobs: Experience[] }) {
                 {formatExperienceRange(job.start, job.end)}
               </p>
             </div>
+            {job.highlights.length > 0 && (
+              <ul className="mt-2 space-y-1 pl-8">
+                {job.highlights.map((h) => (
+                  <li
+                    key={h}
+                    className="text-sm leading-6 text-zinc-600 dark:text-zinc-400"
+                  >
+                    <span aria-hidden className="mr-2 text-zinc-400 dark:text-zinc-500">—</span>
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            )}
           </>
         );
 

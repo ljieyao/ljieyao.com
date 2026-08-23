@@ -1,0 +1,51 @@
+---
+title: "HappyAI — Tender Extraction Platform"
+slug: "happyai"
+summary: "AI tender BQ extraction for Gembira Bina (Next.js + FastAPI + SQLite, Groq primary / Ollama fallback) — confidence-badged review UI and deterministic batch ingest pipeline exporting T1121 xlsx."
+stack:
+  - "Next.js"
+  - "FastAPI"
+  - "SQLite"
+  - "Groq"
+  - "Ollama"
+  - "Python"
+role: "Solutions Architect & Technical Lead"
+publishedAt: "2025-11-25T00:00:00Z"
+draft: false
+linkedin: false
+---
+## Project Overview:
+
+HappyAI is an AI-powered tender BQ automation platform for Gembira Bina Sdn Bhd. It ingests raw tender documents (PDFs, xlsx, images) → LLM extraction (Groq primary / Ollama fallback) → justification/validation → confidence-badged review UI → submission-ready T1121 xlsx (FINALE + SUMMARY + per-section sheets).
+
+## Technologies Used:
+
+* **Frontend:** Next.js (port 8889, SWR, lucide-react), Playwright e2e
+* **Backend:** FastAPI (port 8888), SQLite (`happyai.db`), Python, Docling (PDF structure, experimental)
+* **LLM:** Groq (primary) / Ollama (fallback), RAG rate learner (`/api/rates/learn` + `suggest`), prompts in `backend/app/core`
+* **Pipeline:** Batch extraction (`/extraction/batch`, `/extraction/project-run` with per-doc parser gating), `cli.ingest_folder` for headless folder→xlsx, Xlsx generator (`T1121`)
+
+## Role and Responsibilities:
+
+As Solutions Architect & Technical Lead I designed and shipped HappyAI end-to-end:
+
+* **Architecture:** Split Next.js + FastAPI + SQLite — stateless API (projects/sections/elements/bq_items/rate_history/documents/extraction_runs) with `happyai.db` as single file for on-prem portability.
+* **Extraction Pipeline:** Built `pipeline_orchestrator.py` + `run_state.py` + `docling_gates.py` (off/shadow/on) + `docling_health.py` + `zip_processor.py` + `ab_harness.py` — parser-aware per-doc progress tracked in `extraction_run_docs` (parser_type, fallback_reason, confidence_score).
+* **Product:** Frontend projects/list/new/review + rates intelligence — confirm/override/markup, green/yellow/red confidence badges, revision snapshots (`revisions/create-from-current` + compare), addenda handling, dashboard `stats`.
+* **Deterministic Ingest:** `cli.ingest_folder --input --output --quote-no` — create project → recursive upload → extraction run → xlsx export; quote_no resolution from arg → `project.json` → ancestor folder → uuid; `AUTH_ENABLED=false` auto-set.
+
+## Achievements:
+
+* MVP 1.0.0 shipped — headless batch handles 382+ PDFs in `temp/project_1/input/Original/` to single xlsx via one CLI command.
+* Confidence-badged review cuts manual BQ vetting time — overrides stored as `markup_manual` with `is_override` audit.
+* Docling experimental path gated (shadow vs on) with health checks — no regression when Groq is unavailable (Ollama fallback).
+
+## Challenges Overcome:
+
+* PDF variance (scanned vs digital) — OCR flag + Docling contract with fallback_reason tracking per doc.
+* LLM non-determinism — structured prompts + RAG rates + per-item confidence, review UI as human gate before export.
+* Single-file SQLite portability vs concurrent ingest — run-scoped state + per-doc polling (`GET /extraction/project-run/{run_id}`) avoids lock contention.
+
+## Key Takeaways:
+
+Tender automation lives or dies on determinism. Groq/Ollama + Docling give extraction, but the product is the pipeline — gated parsers, per-doc run state and a CLI that turns a tender folder into a T1121 without the UI.

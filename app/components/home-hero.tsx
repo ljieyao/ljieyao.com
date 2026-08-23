@@ -14,7 +14,7 @@ export function HomeHero() {
         style={{ "--rise-delay": "0ms" } as CSSProperties}
       >
         <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
-        Full Stack Web &amp; Mobile App Engineer
+        Solutions Architect · Technical Lead · Senior Full-Stack Engineer
       </p>
       <h1
         className="hero-rise mt-4 text-5xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl"
@@ -26,8 +26,7 @@ export function HomeHero() {
         className="hero-rise mx-auto mt-6 max-w-xl text-lg leading-8 text-zinc-600 dark:text-zinc-400"
         style={{ "--rise-delay": "140ms" } as CSSProperties}
       >
-        I design and build web and mobile products end to end — from idea to
-        production.
+        12+ years architecting & shipping enterprise, fintech & integration-heavy platforms — cloud-native, payments at scale (235k+ users), and AI-enabled workflows. MBA (Business Analytics), University of Malaya.
       </p>
       <a
         href="https://api.whatsapp.com/send?phone=601164110281"

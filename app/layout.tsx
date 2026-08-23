@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JY Liu — Full Stack Engineer",
+  title: "JY Liu — Solutions Architect | Technical Lead | Senior Full-Stack Engineer",
   description:
-    "JY Liu is a full stack web & mobile app engineer based in Malaysia, building products across web, mobile, and cloud. Portfolio, case studies, and writing at ljieyao.com.",
+    "Solutions Architect & Technical Lead (12+ years) — enterprise, fintech & integration-heavy platforms. VFS Global consular systems, CXM Direct payments (235k+ users, 12 PSPs), AI-enabled product engineering. MBA (Business Analytics), University of Malaya. Based in Kuala Lumpur.",
   metadataBase: new URL("https://ljieyao.com"),
   alternates: {
     types: {
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "JY Liu — Full Stack Engineer",
+    title: "JY Liu — Solutions Architect | Technical Lead",
     description:
-      "Full stack web & mobile app engineer based in Malaysia. Portfolio, case studies, and writing at ljieyao.com.",
+      "Solutions Architect & Technical Lead — enterprise, fintech & payments at scale, AI-enabled workflows. Based in Kuala Lumpur.",
     url: "https://ljieyao.com",
     siteName: "JY Liu",
     locale: "en_US",
@@ -37,15 +37,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "JY Liu — Full Stack Engineer",
+        alt: "JY Liu — Solutions Architect | Technical Lead",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "JY Liu — Full Stack Engineer",
+    title: "JY Liu — Solutions Architect | Technical Lead",
     description:
-      "Full stack web & mobile app engineer based in Malaysia. Portfolio, case studies, and writing at ljieyao.com.",
+      "Solutions Architect & Technical Lead — enterprise, fintech & payments at scale, AI-enabled workflows. Based in Kuala Lumpur.",
     images: ["/og-image.png"],
   },
 };

@@ -1,0 +1,52 @@
+---
+title: "AvaEra — Compensation Platform"
+slug: "avaera"
+summary: "Modernized legacy MLM into pnpm + Turborepo monorepo (Next.js 16, Prisma 7, PostgreSQL). 15-service reward engine covering direct sponsor, team bonus, pool sharing & profit distribution at scale."
+stack:
+  - "Next.js"
+  - "Prisma"
+  - "PostgreSQL"
+  - "Turborepo"
+  - "Auth.js"
+  - "Tailwind CSS"
+role: "Solutions Architect & Technical Lead"
+publishedAt: "2026-02-12T00:00:00Z"
+draft: false
+linkedin: false
+---
+## Project Overview:
+
+AvaEra is a next-generation compensation platform modernized from a legacy stack into a pnpm + Turborepo monorepo. Built for real MLM operations across direct sponsor, team bonus, pool sharing, profit distribution and merchant commissions — with budget-capped, pro-rated reward logic under a 50% payout cap.
+
+## Technologies Used:
+
+* **Frontend:** Next.js 16 (App Router, Turbopack, Server Actions), React 19, Tailwind CSS 4, Radix UI / shadcn
+* **Backend:** Next.js Server Actions + Prisma 7 + PostgreSQL 18, Auth.js v5
+* **Monorepo:** pnpm 10 + Turborepo 2.9, shared packages (`database`, `shared` DTOs/Zod)
+* **Infra:** Docker, S3/MinIO, Cron-protected batch endpoints, Vitest + Playwright
+
+## Role and Responsibilities:
+
+As Solutions Architect & Technical Lead via InnoLab Global, I owned architecture, delivery and mentoring across the full stack:
+
+* **Architecture:** Led migration from legacy to Turborepo monorepo — route groups `(auth)/(dashboard)/(admin)`, thin Server Actions over `lib/services` domain layer, Prisma as single source of truth.
+* **Reward Engine (15 services):** Designed DaiseE amendment (v0.8.0, active): `PER_LEVEL` team bonus (10 generations, 15% cash + 3% credit), `THRESHOLD_ACCRUAL` pool (7 tiers RM100K–RM10M, top-tier-only, monthly accrual / quarterly payout), 50% payout cap with `proRateRewardToCap`, 6-month inactivity cash flush, 7-day merchant hold.
+* **Delivery:** Built `/admin/config`, `/admin/tiers`, `/admin/pool-ranks`, `/admin/simulator` (3 quarterly stress scenarios + Leader standalone, PASS/FAIL gates), budget-enforced company commission (20%) and 80/20 cash/credit split.
+* **Quality:** Introduced Biome, commitlint, lint-staged, Vitest unit + Playwright e2e, Prisma migrations — wallet separation (cash withdrawable, credit redemption-only) with serializable transactions.
+
+## Achievements:
+
+* Shipped production-grade monorepo replacing legacy hierarchy/points logic — scalable to 2k+ members across MY/SG/CN/ID patterns reused from Buddy System.
+* Implemented deterministic reward math with payout-cap pro-rating — prevents over-distribution under complex sponsorship chains.
+* Delivered admin simulator with contribution-margin gates — admins must see stress results before saving config.
+* Zero-downtime batch cron endpoints (`/api/cron/*` with `CRON_SECRET`) for monthly team bonus and quarterly pool runs.
+
+## Challenges Overcome:
+
+* Reconciling legacy BOUNDED/POOL semantics with DaiseE per-level/threshold accrual — strict Zod validation (`TeamBonusLevelRatesSchema.length(10)`, `PoolThresholdsSchema.min(7)` monotonic).
+* Inactivity flush correctness — serializable transaction, zero only cash, retain credit, new `INACTIVITY_CASH_FLUSH` ledger type.
+* Cash vs credit separation under withdrawal caps (RM100 min / RM50K max, 20% fee) without leaking credit to withdraw flow.
+
+## Key Takeaways:
+
+AvaEra sharpened my ability to model regulated money flows as code — bounded budgets, threshold gates and pro-rata caps — while keeping a Turborepo monorepo shippable. The reward engine is now a reusable pattern for compensation products.
