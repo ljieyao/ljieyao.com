@@ -9,13 +9,12 @@ import type { CSSProperties } from "react";
 export function HomeHero() {
   return (
     <section className="mx-auto w-full max-w-5xl px-6 pt-24 pb-24 text-center sm:py-32">
-      <p
-        className="hero-rise flex items-center justify-center gap-2.5 text-sm font-medium uppercase tracking-widest text-zinc-500 dark:text-zinc-400"
-        style={{ "--rise-delay": "0ms" } as CSSProperties}
-      >
-        <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
-        Solutions Architect · Technical Lead · Senior Full-Stack Engineer
-      </p>
+      <div className="hero-rise flex items-center justify-center gap-3" style={{ "--rise-delay": "0ms" } as CSSProperties}>
+        <img src="/images/logo.png" alt="" width="48" height="48" className="h-12 w-12" />
+        <p className="text-sm font-medium uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+          Solutions Architect · Technical Lead · Senior Full-Stack Engineer
+        </p>
+      </div>
       <h1
         className="hero-rise mt-4 text-5xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl"
         style={{ "--rise-delay": "70ms" } as CSSProperties}

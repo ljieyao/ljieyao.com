@@ -20,8 +20,10 @@ export function SiteNav() {
       <nav className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-6">
         <Link
           href="/"
-          className={`cursor-pointer text-sm font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 ${focusRing}`}
+          className={`cursor-pointer flex items-center gap-2 text-sm font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 ${focusRing}`}
+          aria-label="JY Liu — Home"
         >
+          <img src="/images/logo.png" alt="" width="28" height="28" className="h-7 w-7" />
           JY Liu
         </Link>
         <div className="flex items-center gap-2 sm:gap-6">
