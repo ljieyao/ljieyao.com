@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "Blog — JY Liu",
   description:
     "Writing on engineering, technology trends, business decision-making, and career reflections by JY Liu.",
+  alternates: {
+    canonical: "/blog",
+  },
 };
 
 export default async function BlogIndexPage() {

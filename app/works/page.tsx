@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Works — JY Liu",
   description:
     "Selected works and case studies by JY Liu — web platforms, mobile apps, e-commerce, and integrations.",
+  alternates: {
+    canonical: "/works",
+  },
 };
 
 export default async function WorksIndexPage() {

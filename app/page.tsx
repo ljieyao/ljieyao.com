@@ -7,6 +7,7 @@ import {
 } from "@/lib/content";
 import { ExperienceList } from "./components/experience-list";
 import { HomeHero } from "./components/home-hero";
+import { JsonLd, PERSON, SITE } from "./components/json-ld";
 import { PortfolioGrid } from "./components/portfolio-grid";
 import { PostList } from "./components/post-list";
 import { Reveal } from "./components/reveal";
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
   title: "JY Liu — Solutions Architect | Technical Lead | Senior Full-Stack Engineer",
   description:
     "Solutions Architect & Technical Lead (12+ years) — enterprise, fintech & integration-heavy platforms. VFS Global consular systems, CXM Direct payments (235k+ users, 12 PSPs), AI-enabled product engineering. MBA (Business Analytics), University of Malaya.",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 function SectionHeading({ title, href, linkLabel }: { title: string; href?: string; linkLabel?: string }) {
@@ -44,6 +48,37 @@ export default async function Home() {
 
   return (
     <main className="flex flex-1 flex-col">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "JY Liu — Solutions Architect & Engineer",
+          url: SITE.url,
+          description:
+            "Personal site of JY Liu: writing on engineering and architecture, selected works, and consulting contact.",
+          inLanguage: "en",
+          publisher: PERSON,
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          mainEntity: {
+            ...PERSON,
+            alumniOf: {
+              "@type": "CollegeOrUniversity",
+              name: "University of Malaya",
+            },
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Kuala Lumpur",
+              addressCountry: "MY",
+            },
+          },
+        }}
+      />
+
       <HomeHero />
 
       <section className="border-t border-zinc-200 dark:border-zinc-800">

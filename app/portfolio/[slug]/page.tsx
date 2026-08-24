@@ -7,6 +7,7 @@ import {
   markdownToHtml,
 } from "@/lib/content";
 import { formatDate } from "@/lib/format";
+import { JsonLd, creativeWorkJsonLd } from "../../components/json-ld";
 
 export async function generateStaticParams() {
   const items = await getAllPortfolios();
@@ -21,15 +22,36 @@ export async function generateMetadata(
   if (item === null) {
     return { title: "Project not found — JY Liu" };
   }
+  const url = `https://ljieyao.com/portfolio/${item.slug}`;
   return {
     title: `${item.title} — JY Liu`,
     description: item.summary,
+    alternates: {
+      canonical: `/portfolio/${item.slug}`,
+    },
+    keywords: item.stack,
+    authors: [{ name: "JY Liu", url: "https://ljieyao.com" }],
     openGraph: {
       title: `${item.title} — JY Liu`,
       description: item.summary,
-      url: `https://ljieyao.com/portfolio/${item.slug}`,
+      url,
       type: "article",
       publishedTime: item.publishedAt,
+      authors: ["JY Liu"],
+      tags: item.stack,
+      images: [
+        {
+          url: item.coverImage ?? "/og-image.png",
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${item.title} — JY Liu`,
+      description: item.summary,
+      images: [item.coverImage ?? "/og-image.png"],
     },
   };
 }
@@ -47,6 +69,7 @@ export default async function PortfolioDetailPage(
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
+      <JsonLd data={creativeWorkJsonLd(item)} />
       <Link
         href="/works"
         className="text-sm text-zinc-500 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"

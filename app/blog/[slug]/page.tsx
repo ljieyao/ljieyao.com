@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, markdownToHtml } from "@/lib/content";
 import { categoryLabel, formatDate } from "@/lib/format";
+import { JsonLd, blogPostingJsonLd } from "../../components/json-ld";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -17,15 +18,30 @@ export async function generateMetadata(
   if (post === null) {
     return { title: "Post not found — JY Liu" };
   }
+  const url = `https://ljieyao.com/blog/${post.slug}`;
   return {
     title: `${post.title} — JY Liu`,
     description: post.summary,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
+    keywords: post.tags,
+    authors: [{ name: "JY Liu", url: "https://ljieyao.com" }],
     openGraph: {
       title: `${post.title} — JY Liu`,
       description: post.summary,
-      url: `https://ljieyao.com/blog/${post.slug}`,
+      url,
       type: "article",
       publishedTime: post.date,
+      authors: ["JY Liu"],
+      tags: post.tags,
+      images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} — JY Liu`,
+      description: post.summary,
+      images: ["/og-image.png"],
     },
   };
 }
@@ -41,6 +57,7 @@ export default async function BlogPostPage(props: PageProps<"/blog/[slug]">) {
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
+      <JsonLd data={blogPostingJsonLd(post)} />
       <Link
         href="/blog"
         className="text-sm text-zinc-500 transition-colors hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-50"

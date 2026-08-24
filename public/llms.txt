@@ -1,0 +1,24 @@
+# JY Liu — Solutions Architect | Technical Lead | Senior Full-Stack Engineer
+
+> Personal site of JY Liu (ljieyao): 12+ years building production systems across fintech, travel and enterprise platforms. Based in Kuala Lumpur, Malaysia. MBA (Business Analytics), University of Malaya. Available for consulting on web/mobile app projects — Next.js/React, Node.js, Python, AWS.
+
+This is a static personal website. Use the links below as the authoritative index; `/llms-full.txt` contains the complete content of every article and case study in plain markdown.
+
+## Pages
+
+- [Home](https://ljieyao.com/): Overview of experience, selected works, and latest writing.
+- [Blog](https://ljieyao.com/blog): Writing on engineering, technology trends, business decision-making, and career reflections.
+- [Works](https://ljieyao.com/works): Selected works and case studies — web platforms, mobile apps, e-commerce, and integrations.
+- [Portfolio](https://ljieyao.com/portfolio): Alternate view of selected projects and case studies.
+- [Contact](https://ljieyao.com/contact): How to reach JY Liu — WhatsApp (+60 11-6411 0281), email (ljieyao0210@gmail.com), or contact form. FAQ included.
+- [Full content for LLMs](https://ljieyao.com/llms-full.txt): Every blog post and portfolio case study, concatenated as plain markdown.
+- [RSS feed](https://ljieyao.com/rss.xml): All published posts as RSS 2.0.
+- [Sitemap](https://ljieyao.com/sitemap.xml): XML sitemap of all pages.
+- [LinkedIn profile](https://linkedin.com/in/ljieyao): JY Liu's professional profile.
+- [GitHub profile](https://github.com/ljieyao): JY Liu's open-source code and projects.
+
+## About
+
+JY Liu is a Solutions Architect, Technical Lead and Senior Full-Stack Engineer with 12+ years of experience shipping integration-heavy platforms: consular visa systems (VFS Global), payment orchestration (CXM Direct — 235k+ users, 12 PSPs), and AI-enabled product engineering. Services include full-stack web and mobile development, architecture consulting, cloud deployment and DevOps.
+
+AI crawlers are explicitly allowed via robots.txt (GPTBot, ClaudeBot, PerplexityBot, etc.). Content may be quoted with attribution to "JY Liu" and a link to https://ljieyao.com/.

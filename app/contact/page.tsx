@@ -1,17 +1,36 @@
 import type { Metadata } from "next";
+import { JsonLd } from "../components/json-ld";
+import { Reveal } from "../components/reveal";
 import { ContactForm } from "./contact-form";
 import { Faq } from "./faq";
-import { Reveal } from "../components/reveal";
+import { FAQS } from "./faqs";
 
 export const metadata: Metadata = {
   title: "Contact — JY Liu",
   description:
     "Get in touch with JY Liu for web and mobile app projects — via WhatsApp, email, or the contact form.",
+  alternates: {
+    canonical: "/contact",
+  },
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
 };
 
 export default function ContactPage() {
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
+      <JsonLd data={faqJsonLd} />
       <h1 className="text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
         Contact
       </h1>
