@@ -1,0 +1,105 @@
+---
+title: "Ship at the Edge: Turborepo + Next.js 16 + Cloudflare Pages — How I Run Forest City & ljieyao.com"
+date: "2025-08-18T09:00:00Z"
+category: "technical"
+tags:
+  - "nextjs"
+  - "cloudflare"
+  - "turborepo"
+  - "edge"
+summary: "Turborepo + Next.js 16 static exports at the edge: caching, ISR alternatives, and why Pages + Workers beats a VPS for portfolios."
+draft: false
+linkedin: false
+---
+## Why this stack
+
+I run two very different sites from the same monorepo: a community super-app for Forest City, and this personal site. They share nothing in domain logic but they share everything in tooling. TypeScript, ESLint, Tailwind, Next.js 16, a Cloudflare deploy pipeline. Pulling that into a single Turborepo workspace means I fix a build script once and both apps get the fix. It also means a typo in `next.config` doesn't bite one project in isolation and quietly rot the other.
+
+The edge part is the real reason I bothered. Cloudflare's network puts HTML in front of visitors from the closest POP. For a content-heavy site, that is the whole game. Pages handles the static build, Workers handle anything that needs to run on a request, and I never think about origin servers.
+
+## The monorepo shape
+
+A trimmed `turbo.json` looks like this:
+
+```json
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "out/**"]
+    },
+    "lint": {},
+    "dev": { "cache": false }
+  }
+}
+```
+
+Two apps sit under `apps/`: `web` (this site) and `community` (the super-app). Shared code lives in `packages/ui`, `packages/content`, and `packages/eslint-config`. When `packages/ui` changes, Turborepo only rebuilds the apps that actually depend on it. CI runs the affected graph on every PR.
+
+## Static export on Next.js 16
+
+Both apps are pure static. There is no Node server, no SSR, no `runtime = 'nodejs'`. The whole output is `./out`, and Pages serves it directly.
+
+```js
+// next.config.mjs
+const nextConfig = {
+  output: 'export',
+  images: { unoptimized: true },
+};
+export default nextConfig;
+```
+
+`images: { unoptimized: true }` is mandatory. The default `next/image` pipeline needs the Node server's image optimizer, which doesn't exist in a static export. I route through plain `<img>` for blog assets and through Cloudflare Image Resizing for anything user-generated.
+
+The trade-off: I lose server components, route handlers, and incremental static regeneration. That sounds worse than it is. The blog rebuilds on every push to `main`. The community app's home feed is a static fetch I re-run on a 15-minute schedule through a separate Worker. Anything truly dynamic (forms, auth, dashboards) lives outside the static output, in a Worker.
+
+## Workers handle the dynamic bits
+
+The contact form on this site is a clean example. Static Pages can't accept a POST, so the form posts to a Worker. The Worker validates the body with Zod, verifies a Turnstile token, and forwards through Resend. The Worker's `wrangler.toml` is the whole contract:
+
+```toml
+name = "contact-form"
+main = "src/index.ts"
+compatibility_date = "2025-08-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+TURNSTILE_HOSTNAMES = "example.com,example.pages.dev"
+# CONTACT_TO_EMAIL and CONTACT_FROM_EMAIL live under [vars] too,
+# or stay as code defaults. Real keys go in `wrangler secret put`.
+
+# Secrets (set via CLI, never committed):
+#   RESEND_API_KEY
+#   TURNSTILE_SECRET
+```
+
+The community app uses the same pattern for everything that needs to mutate: write paths, OAuth callbacks, file uploads. The rule is simple. Pages stay static, every state change goes through a typed Worker endpoint.
+
+## Build and deploy
+
+GitHub Actions runs `pnpm turbo build --filter=...[origin/main]` on every PR for affected apps, then a full `pnpm turbo build` on `main`. The build output goes straight to Cloudflare Pages with `wrangler pages deploy`:
+
+```bash
+pnpm --filter web build
+pnpm exec wrangler pages deploy apps/web/out --project-name=web
+```
+
+PRs get a preview at `<hash>.web.pages.dev`. `main` promotes to the production hostname. Workers deploy in parallel from the same workflow, so a frontend change and a Worker change ship together.
+
+## Caching without ISR
+
+The thing I missed most coming from Vercel was ISR. Static export kills it. The replacement is a small revalidation Worker I run on a cron trigger. Every 15 minutes it walks a list of MDX slugs, hashes the upstream content, and on change triggers a fresh build. For most posts that's fine. They update within the hour.
+
+For hot pages I lean on Cloudflare Cache Rules. Static HTML gets a `Cache-Control: public, max-age=300, s-maxage=86400, stale-while-revalidate=604800` header from `_headers` in the Pages project. The CDN honors it, edge POPs absorb the traffic, and a rebuild only matters when content actually changes.
+
+## Gotchas that bit me
+
+A few things to know before you commit:
+
+- `output: 'export'` is all-or-nothing. You can't mix SSR routes into the same app. Split into two apps if you need both.
+- Middleware runs at build time, not request time. If your middleware needs cookies, it has to move to a Worker.
+- `next/image` without the optimizer means you handle responsive sizes yourself. I export multiple sizes and write them into MDX frontmatter.
+- Cloudflare's free tier covers both Pages and Workers for everything I do here. Don't pay Vercel for a portfolio.
+
+Edge isn't a marketing line. It's a different way to think about deploys. Once the static split and Worker pattern click, you stop provisioning servers entirely.

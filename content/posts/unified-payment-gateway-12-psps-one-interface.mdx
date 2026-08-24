@@ -1,0 +1,50 @@
+---
+title: "Building a Unified Payment Gateway for 235k Users: 12 PSPs, 12 Regions, One Interface"
+date: "2025-02-17T09:00:00Z"
+category: "project"
+tags:
+  - "payments"
+  - "architecture"
+  - "fintech"
+  - "system-design"
+summary: "How we unified a fragmented PSP landscape into one resilient gateway — patterns for idempotency, reconciliation, and graceful failover without naming vendors."
+draft: false
+linkedin: false
+---
+
+## The Fragmentation Problem
+
+When you operate a platform across a dozen regions, you don't choose your payment service providers. They choose you. Each jurisdiction comes with a local incumbent, a different settlement currency, a different regulatory regime, and a different expectation around refunds, chargebacks, and KYC. By the time our platform was serving 235k active users, we were routing money through twelve distinct PSPs — let's call them Provider-A through Provider-L. Each had its own SDK, its own authentication model, its own webhook format, and its own idea of what a "successful" payment looks like.
+
+The first version of the system called PSPs directly from the order service. It worked. Then a regional provider had an outage during a marketing campaign and we lost six hours of revenue before anyone noticed the 5xx rate. That outage is the reason this rewrite exists. The new contract was simple: one interface for product and ops, twelve underneath, and zero user-visible impact when any single provider degrades.
+
+## The Abstraction Layer
+
+We treated PSP integration as an adapter problem. A `PaymentGateway` interface defines the only verbs the rest of the system is allowed to speak: `createDeposit`, `capture`, `refund`, `getStatus`, `parseWebhook`. Each PSP ships as a thin adapter that translates those verbs into the provider's native calls. The strategy that picks an adapter lives in a `RoutingPolicy` that consults user region, currency, amount, and the live health score of each provider.
+
+```
+gateway.createDeposit({ userId, amount, currency, region })
+  → RoutingPolicy.select(providerRegistry, ctx)
+  → ProviderAdapter.createDeposit(ctx)
+  → normalised Result<{ providerRef, status, rawReceipt }>
+```
+
+Two design choices paid off more than any others. First, we never let a PSP-specific field leak past the adapter. Webhook payloads are normalised at the edge into a single `ProviderEvent` shape; if a provider changes its schema, only one file changes. Second, every adapter is registered with a `Capability` manifest — supported methods, settlement currencies, max amount, KYC tier. The router refuses to pick an adapter that cannot legally or technically serve the request. That eliminated an entire class of "we routed a Brazilian user to a European-only provider" bugs.
+
+## Idempotency, Reconciliation, and the Ledger
+
+Idempotency is the most underrated requirement in payments. Every `createDeposit` call carries a client-generated `Idempotency-Key` that is stored alongside the request. If the same key arrives twice — because a user retried, because our worker retried, because the PSP timed out and we didn't know if it succeeded — the gateway returns the original result without contacting the provider. The naive version of this is one row in Postgres with a unique constraint. The version we ended up with is that row plus a state machine: `pending → succeeded | failed | ambiguous`. The `ambiguous` state is the one nobody writes blog posts about, but it's the one that costs real money.
+
+Reconciliation runs every fifteen minutes. For every deposit we believe we issued, we ask the PSP for its authoritative status, compare against our ledger, and flag mismatches. The ledger itself is append-only — we never update a row, only insert compensating entries. A 0.1% mismatch rate is normal; the job of the reconciler is not to prevent mismatches but to detect them inside the SLA window so finance can decide what to do.
+
+## Failover and Observability
+
+Failover is layered. The router has a circuit breaker per region; when Provider-A's success rate drops below 95% over five minutes, traffic shifts to the next viable provider with no operator action. Webhook delivery gets the same treatment: if Provider-A's webhook endpoint is down, the gateway queues events locally and replays them once the endpoint recovers. PSPs do not guarantee at-leal delivery, which means we cannot guarantee it either, but we can guarantee at-least-once with idempotent processing on the consumer side.
+
+Observability is the third leg of the stool. Every gateway call emits a structured log with `provider`, `region`, `currency`, `amount`, `idempotency_key`, `latency_ms`, and `result`. Dashboards are organised by provider and region so on-call engineers can answer "is this us or them?" in one glance. We learned the hard way that "provider X is slow" without breakdown by region is not actionable.
+
+## Lessons
+
+Three patterns are worth borrowing regardless of the stack. One: treat every PSP as if it will silently lose a request, because it will. Idempotency keys are non-negotiable. Two: keep a normalised event model at the edge so provider churn never reaches business code. Three: invest in reconciliation before you need it. Catching a 0.1% mismatch the next morning is a finance problem. Catching it during month-end close is a career problem.
+
+The gateway is now boring in the way that good infrastructure is boring. When a regional provider has an outage, traffic shifts, users pay, and the on-call engineer gets a page they can close in under five minutes. Boring is the goal.

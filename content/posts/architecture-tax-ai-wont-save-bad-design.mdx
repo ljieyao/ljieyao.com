@@ -1,0 +1,55 @@
+---
+title: "The Architecture Tax: Why AI Won't Save You From Bad System Design"
+date: "2026-05-11T09:00:00Z"
+category: "trend"
+tags:
+  - "architecture"
+  - "ai"
+  - "system-design"
+  - "technical-debt"
+summary: "AI accelerates output and amplifies weak foundations. The most expensive line of code in 2026 is still the one built on the wrong abstraction."
+draft: false
+linkedin: false
+---
+
+AI made us faster. It did not make our systems simpler.
+
+In the last year I watched teams ship features in a week that once took a month. Then I watched them spend the next three weeks unwinding what the generator left behind. The acceleration is real. So is the tax.
+
+## The tax is not about bad code
+
+A language model can write clean functions. It can add tests, handle edge cases, even suggest a nicer variable name. The code looks right. The tax shows up one layer higher, where models are weakest: boundaries.
+
+Take a checkout flow I was asked to review for a fintech-adjacent product. Three services touched money: a gateway adapter, a ledger writer, and a notification dispatcher. Each file was tidy. The problem was that no single file owned the definition of "payment succeeded." That concept was smeared across an event name, a database flag, and a copy-pasted `if` in the frontend. Humans had created the seam. AI happily filled it with more code that assumed the seam was correct.
+
+AI does not question your seams. It decorates them.
+
+## Three places AI makes weak design more expensive
+
+**1. The wrong abstraction, now everywhere.** When a helper is duplicated across five services, a model will learn the duplication as the pattern. Ask it to add a sixth service and it will copy the shape faithfully. The cost of fixing the abstraction just went from one file to six.
+
+**2. Data flow you cannot trace.** Generated code loves to pass raw objects through. A `user`, a `payload`, a `data` that changes shape between calls. Add a model in the middle and the shape changes become invisible. The first time you debug it, you pay the tax.
+
+**3. Reversibility you never designed for.** Many teams prompt for "add a retry" or "add a queue" without deciding what must be idempotent, what must be ordered, what can be lost. The model adds a retry loop. It does not add the idempotency key.
+
+## A checklist before you prompt
+
+I now run three questions before any AI-generated change touches a system I own:
+
+**Where is the boundary?** If I cannot draw the box that owns this concept, I do not generate code inside it yet. For the checkout example, we centralized "payment outcome" into a single state machine first. Only then did generation help.
+
+**What is the shape of data at every hop?** I want a typed contract between every service, even if the type is `unknown` and validated at runtime with Zod. Typed edges make generated code safer because the model has something to conform to.
+
+**Can I undo this?** If the write fails halfway, what stays? If the answer is "we will figure it out," the design is not ready. I ask for an idempotency or compensation pattern before I ask for speed.
+
+These are not anti-AI checks. They make AI useful.
+
+## Speed is not the same as progress
+
+The most seductive promise of 2025 was that AI would erase technical debt. It does the opposite. Debt is a design problem, and generation scales whatever design you already have. Good boundaries get more good code. Bad boundaries get more bad code, faster.
+
+On a recent internal dashboard rebuild, we deliberately left the AI assistant off for two days. We mapped entities, drew the dependency graph on a whiteboard, and deleted a shared "utils" package that had become a junk drawer. When we turned the assistant back on, its suggestions got immediately better. It had better seams to work with.
+
+The architecture tax is not new. Conway's law, coupling, cohesion — we have had names for this for decades. What is new is the interest rate. With AI, you pay daily.
+
+AI is a strong junior engineer with perfect recall. It needs the same thing every junior engineer needs: clear boundaries, typed contracts, and a reversible plan. Give it those, and it will earn its keep. Skip them, and you will ship faster than ever straight into the same wall, just with more polished code on the way there.

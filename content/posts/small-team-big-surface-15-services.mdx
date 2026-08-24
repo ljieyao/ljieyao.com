@@ -1,0 +1,74 @@
+---
+title: "Small Team, Big Surface: Operating 15 Services With 3 Engineers Without Burning Out"
+date: "2026-08-24T09:00:00Z"
+category: "project"
+tags:
+  - "leadership"
+  - "platform"
+  - "devops"
+  - "team"
+summary: "Tactics for running a broad platform with a small team — templates, paved roads, and the operational habits that keep on-call humane."
+draft: false
+linkedin: false
+---
+
+We run a platform that looks like it should need ten people. It has roughly fifteen services, a few frontends, a handful of workers, and the usual tangle of cron jobs and webhooks. The team that operates it is fewer than five.
+
+We did not get there by working nights. We got there by being boring on purpose.
+
+## The real cost is not code, it is decisions
+
+Every new service asks the same questions: how do I deploy, how do I observe it, how do I roll it back, how do I get a secret in, what happens when it pages me at 2am? If each service answers differently, you have not built fifteen services. You have built fifteen snowflakes and you staff them with your evenings.
+
+We stopped answering those questions per service.
+
+## Paved roads over freedom
+
+We keep a single service template. New service equals `copy template, rename, pick a database`. The template ships with:
+
+- A Dockerfile and a `wrangler.toml` or compose file that matches production
+- A `/health` endpoint and structured JSON logging
+- OpenTelemetry tracing with a service name
+- A dashboard that appears automatically once the service reports metrics
+- An alert rule that only fires when a user can feel it
+- A runbook with one page: how to deploy, how to roll back, how to silence the alert
+
+No step is clever. That is the point. Clever does not survive a 3am page.
+
+Templates feel slow on day one. They pay on week three when the third service reuses the same pipeline without a new design review.
+
+## Observability before features
+
+Our rule is simple: no new endpoint without a metric, a log line, and a trace span. We made dashboards a merge requirement, not a follow-up ticket.
+
+We also cut alerts aggressively. An alert must mean "a user is affected and a human must act now." Everything else is a graph. When we started, each service had seven alerts. We are now at one or two per service. On-call got quiet without us trying to be quiet. It got quiet because we stopped being paged for things we could see on a dashboard tomorrow morning.
+
+## Deployments are a product
+
+One command deploys one service: `deploy <service>`. It builds, pushes, runs migrations if needed, health-checks, and pauses for a manual promote to production. There is no special deploy for "this one is different." If a service needs a special deploy, we fix the service until it does not.
+
+We deploy small and often. A typical change is under fifty lines and ships within the hour. Small changes are easy to reason about at 2am. Large releases are not, no matter how many approvals they have.
+
+## Saying no is an operational skill
+
+The hardest habit is not technical. It is saying no to the next feature that needs a new stateful dependency.
+
+We keep a short list of allowed building blocks: managed Postgres, a queue, object storage, and a cache. If a proposal needs something else, it waits. We have turned down nice-to-have technologies because we know who will own them at midnight. A rewards platform I worked on stayed on Postgres instead of adding a graph database. The feature was slightly less elegant. The team stayed sane.
+
+## On-call that respects humans
+
+We rotate weekly. The secondary shadows, the primary owns the decision. After any page, the postmortem asks one question first: "what alert was noisy or missing?" We fix the alert before we fix the code. If the same alert fires twice in a month without action, we tune it until it stops or until we actually want to be woken for it.
+
+We also protect focus time. No deploys on Friday afternoon, no new service scaffolding during an incident week. It sounds bureaucratic. It is just respect for cognitive load.
+
+## What I would tell a team starting today
+
+If you are about to grow from one service to many with a small team, keep it simple:
+
+1. One template, one deploy command, one dashboard shape
+2. Metrics before features, graphs before alerts
+3. Managed services over self-hosted whenever possible
+4. A short allow-list of infrastructure primitives
+5. A weekly rotation you can keep for a year without burning out
+
+Big surface with a small team is not a hero story. It is a habits story. The habits are not impressive. They just work often enough that you get to keep building instead of constantly firefighting. That is the whole goal.

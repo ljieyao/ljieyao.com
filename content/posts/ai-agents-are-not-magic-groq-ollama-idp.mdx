@@ -1,0 +1,62 @@
+---
+title: "AI Agents Are Not Magic: What Building a Tender Parser with Groq & Ollama Taught Me"
+date: "2025-05-19T09:00:00Z"
+category: "trend"
+tags: ["artificial-intelligence", "idp", "llm", "groq"]
+summary: "From hype to pipeline: shipping a document parser with hosted and local LLMs, learning where agents help, fail, and need humans in the loop."
+draft: false
+linkedin: false
+---
+Twelve months ago I wrote a paper arguing that AI would reshape corporate strategy. This quarter I shipped a product that actually does the reshaping, at least on a small slice of one company's back office. The gap between those two versions of me is the subject of this post, and it isn't pretty.
+
+When I started the build I still half-believed the demo videos. Agents that "just read" documents. Reasoning chains that "just figure out" the right field. Pull a PDF in, get structured data out, no humans involved. A year of strategy coursework had left me optimistic. A year of shipping left me cured.
+
+The reality is closer to plumbing than magic. Here is the pipeline that actually works for parsing semi-structured business documents in production.
+
+## The Pipeline That Replaced Magic
+
+Five stages, run in sequence:
+
+1. **Ingest**: accept a PDF or scanned image, classify the document type, decide whether the rest of the pipeline is worth running.
+2. **OCR**: convert pixels to text where needed. For native PDFs, extract the text layer directly. For scans, run an OCR model.
+3. **Chunk**: split the document into overlapping windows small enough for the model's context, but large enough to keep related fields together.
+4. **Extract**: for each chunk, ask the model to pull structured fields against a schema. This is where the LLM lives.
+5. **Validate**: run the output through deterministic checks. Regex patterns for IDs, type checks for amounts, cross-field sanity (subtotal plus tax equals total).
+
+If a step fails, route the document to a human reviewer. That last clause is the part no demo video shows.
+
+## Hosted Versus Local: The Real Tradeoffs
+
+I ran this pipeline against two backends and learned more from the comparison than from either alone.
+
+Hosted inference on Groq gave me sub-second latency on extraction, paid only per request, and let me iterate on prompts without standing up a GPU. The cost per sample tender stayed in the cents, which made the unit economics work for low-volume clients.
+
+Local inference via Ollama gave me the opposite trade. Higher latency, zero per-call cost, and most importantly: the document never leaves the customer's infrastructure. For procurement documents with confidentiality clauses baked into the contract, that property is not a nice-to-have. It is a dealbreaker.
+
+The interesting part isn't which one is "better". It's that the same architecture serves both. Swap the backend, swap the prompt template, keep the schema and validation. The product surface barely moves. The trust conversation with the client changes completely.
+
+## Where Agents Help, Where They Hallucinate
+
+Models are good at: parsing natural-language boilerplate, normalizing inconsistent field names, handling unexpected document layouts without code changes.
+
+Models are bad at: arithmetic on numbers, consistent IDs across documents, refusing to answer when the document doesn't actually contain the field.
+
+I learned this the hard way. My first version asked the model to compute totals from line items. It produced numbers that looked right. They were not right. The second version asks the model to extract line items verbatim, then computes the totals in code. That version has not produced a wrong total in eight weeks.
+
+The rule that emerged: anything a regex or a type checker can verify belongs in deterministic logic, not in the prompt. Save the model for the genuinely ambiguous work.
+
+## Guardrails Are Not Optional
+
+Two guardrails carried most of the weight.
+
+First, a strict schema for every extraction. If the model returns a field outside the schema, the document routes to a human. If it returns the right shape but the wrong type, same thing.
+
+Second, a confidence score from the model itself, combined with a sanity score from the validators. Low confidence plus failed sanity equals a review queue entry. High confidence plus passing sanity equals an auto-accept. The middle ground is the interesting one. That is where most production documents live, and that is where the human-in-the-loop review queue earns its keep.
+
+## The Actual Lesson
+
+A year ago I thought AI would change how decisions get made. I was right, but the change is not the one I described in my paper. It is not executives getting smarter recommendations. It is a parser sitting between a pile of PDFs and a spreadsheet, asking for human help only when it gets confused.
+
+Agents are not magic. They are pipelines with a probabilistic step in the middle, wrapped in validation, gated by a human review queue. Treat them that way and they ship. Treat them like oracles and you will spend the next quarter debugging hallucinations.
+
+The bottleneck was never model IQ. It was always knowing which step to delegate and which step to keep for yourself.

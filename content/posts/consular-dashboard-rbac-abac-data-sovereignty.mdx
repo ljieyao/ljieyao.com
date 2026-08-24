@@ -1,0 +1,68 @@
+---
+title: "The Consular Dashboard Problem: RBAC/ABAC and Data Sovereignty Across Borders"
+date: "2026-02-09T09:00:00Z"
+category: "technical"
+tags:
+  - "rbac"
+  - "abac"
+  - "architecture"
+  - "data-sovereignty"
+summary: "Designing a consular operations dashboard for multiple countries: how RBAC plus ABAC, row-level policies, and data boundaries shape every decision."
+draft: false
+linkedin: false
+---
+
+Most "dashboard" problems are simple until they cross a border. When a global consular services platform operates across dozens of countries, with field offices acting as independent missions while answering to a central operations team, the access control problem stops looking like a permissions table and starts looking like a constitution.
+
+This is the architecture problem I spent the better part of last year solving. Here is how I think about it now, abstracted enough to apply to any multi-jurisdiction operations platform.
+
+## The Shape of the Problem
+
+A central operations team needs visibility across all missions. Mission-A's director needs full access to Mission-A. Country-X's regional coordinator needs read access to every mission inside Country-X. External auditors need read-only access to financial flows for the regions they cover. A single employee might be a back-office accountant for one mission and a reviewer for another in a different region.
+
+Pure RBAC cannot express this. Roles like "director" or "coordinator" are too coarse. They don't capture *which* mission, *which* region, *which* time window. Pure ABAC, with policies evaluated against every attribute on every request, becomes a performance liability at scale and produces a forest of policies nobody can audit.
+
+The answer is a hybrid. RBAC defines the shape of what a user can do: approve, view, export, refund. ABAC attributes define the scope: mission, region, date range, employment type. Row-level security, expressed at the data layer, enforces the intersection of the two.
+
+## Hybrid RBAC and ABAC, in Practice
+
+The mental model I use:
+
+- A **permission** is a verb: `mission.view`, `expense.approve`, `audit.export`.
+- A **role** is a set of permissions: `mission_director`, `regional_auditor`, `finance_reviewer`.
+- An **assignment** binds a user to a role with an attribute scope: `{ user: u1, role: mission_director, scope: { mission: "Mission-A" } }`.
+
+A user can hold multiple assignments across roles and scopes. When they act, the request carries the context (which mission, which resource), and the authorization layer asks a single question: does *any* of this user's assignments grant the requested permission *within this context*?
+
+This separation is what makes the system maintainable. Adding a new country or a new role doesn't require touching the policy engine. It requires a new assignment row.
+
+## Row-Level Security at the Database
+
+App-layer checks are not enough. A misconfigured endpoint, a forgotten filter, a new dashboard widget someone shipped on Friday: each is a leak waiting to happen. So the data layer enforces the same rules.
+
+Concretely: every operational table carries a `mission_id` and a `region_id`. The database session is opened with the user's effective scope as a parameter, and a row-level security policy filters `SELECT`, `UPDATE`, `DELETE` against that session context. The application code cannot accidentally bypass it, because the database simply will not return rows the user cannot see.
+
+This approach also keeps the query planner happy. A well-indexed `mission_id` predicate is faster than a giant join against a permissions table on every request.
+
+## Audit Trails Are Not Optional
+
+When regulators ask who approved what, when, and from which session, the answer must be a single query, not a forensic exercise. So every state change writes:
+
+- The user identity.
+- The role and scope active at the time.
+- The action and the resource.
+- A cryptographic hash chaining to the prior record.
+
+The hash chain is the part most teams skip and later regret. Without it, audit logs are mutable, and an attacker with database access can rewrite history. With it, you can prove the log has not been tampered with since the entry was written.
+
+## Enterprise ERP Integration
+
+The last hard part is integration with an enterprise expense platform. The dashboard doesn't replace the ERP. It orchestrates around it. The dashboard writes to a transactional outbox, a small companion process publishes those events to the ERP's intake API, and reconciliation runs on a fixed cadence on both sides.
+
+The pattern matters because direct, synchronous calls from a UI to an ERP turn into thundering herd failures when a regional rollout coincides with month-end. The outbox gives you at-least-once delivery, idempotency keys give you exactly-once effect, and a dead-letter queue gives you a place to put the rows that genuinely cannot resolve.
+
+## What I Would Build Differently Next Time
+
+Two things. First, invest in attribute-based scoping earlier. We initially modeled roles with hard-coded mission IDs and burned weeks unpicking that when regional coordinators needed cross-mission read access. Second, separate "who can see this exists" from "who can see the contents." Most data exposure incidents aren't about leaked records. They're about leaked *existence* of records (a mission's internal naming, the fact that an exception was raised, who approved what last quarter).
+
+Multi-country operations are not an edge case. If your system serves more than one legal jurisdiction, every layer, from authorization to database to audit log, needs to be designed with that in mind from day one. Retrofitting data sovereignty is the most expensive refactor I have ever been part of.
