@@ -40,6 +40,22 @@ export function SiteFooter() {
           >
             WhatsApp
           </a>
+          <a
+            href="https://linkedin.com/in/ljieyao"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cursor-pointer text-zinc-500 transition-colors hover:text-zinc-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:text-zinc-400 dark:hover:text-zinc-50 dark:focus-visible:ring-offset-zinc-950"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://github.com/ljieyao"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="cursor-pointer text-zinc-500 transition-colors hover:text-zinc-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:text-zinc-400 dark:hover:text-zinc-50 dark:focus-visible:ring-offset-zinc-950"
+          >
+            GitHub
+          </a>
         </div>
       </div>
     </footer>
